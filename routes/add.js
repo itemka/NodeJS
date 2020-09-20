@@ -11,4 +11,14 @@ router.get('/', (req, res) => {
   });
 });
 
+router.post('/', (req, res) => {
+  const {
+    body = ''
+  } = req;
+
+  console.log(body);
+
+  res.redirect('/products');
+});
+
 module.exports = router;

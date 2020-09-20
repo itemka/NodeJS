@@ -34,14 +34,6 @@ app.use('/', homeRoutes);
 app.use('/products', productsRoutes);
 app.use('/add', addRoutes);
 
-app.post('/', (req, res) => {
-  const {
-    body = ''
-  } = req;
-
-  res.status(200).send(body);
-});
-
 app.listen(PORT, (err) => {
   if (err) throw err;
   console.log(`> Ready on http://localhost:${PORT}`);
