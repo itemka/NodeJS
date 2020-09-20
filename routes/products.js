@@ -32,4 +32,32 @@ router.get('/:id', async (req, res) => {
   })
 });
 
+router.get('/:id/edit', async (req, res) => {
+  const {
+    params: {
+      id = '',
+    },
+    query
+  } = req;
+
+  if (!query.allow) return res.redirect('/');
+
+  const product = await Product.getById(id);
+
+  res.render('product-edit', {
+    title: `Edit ${product.title}`,
+    product,
+  })
+})
+
+router.post('/edit', async (req, res) => {
+  const {
+    body
+  } = req;
+
+  await Product.update(body);
+
+  res.redirect('/products');
+})
+
 module.exports = router;

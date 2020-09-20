@@ -21,6 +21,25 @@ module.exports = class Product {
     }
   }
 
+  static async update(product) {
+    const products = await Product.getAll();
+
+    const ind = products.findIndex(prod => prod.id === product.id);
+
+    products[ind] = product;
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(
+        path.join(__dirname, '..', 'data', 'products.json'),
+        JSON.stringify(products),
+        (err) => {
+          if (err) reject(err);
+          else resolve();
+        }
+      )
+    })
+  }
+
   async save() {
     const products = await Product.getAll();
     products.push(this.toJSON());
