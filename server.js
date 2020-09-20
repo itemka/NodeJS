@@ -1,13 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const path = require('path');
 const exphbs = require('express-handlebars');
 
 dotenv.config('./env');
 
 const PORT = process.env.PORT || 3000;
+
 const app = express();
+
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
@@ -25,27 +26,24 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-  res.status(200);
-  res.render('index');
+  res.render('index', {
+    title: 'Main page',
+    isHome: true,
+  });
 });
 
-app.get('/about', (req, res) => {
-  res.status(200);
-  res.render('about');
+app.get('/products', (req, res) => {
+  res.render('products', {
+    title: 'Products',
+    isProducts: true,
+  });
 });
 
-app.get('/api/users', (req, res) => {
-  const users = [{
-      name: 'Artyom',
-      age: 24
-    },
-    {
-      name: 'Dan',
-      age: 35
-    },
-  ];
-
-  res.send(users);
+app.get('/add', (req, res) => {
+  res.render('add', {
+    title: 'Add products',
+    isAdd: true,
+  });
 });
 
 app.post('/', (req, res) => {
