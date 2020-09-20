@@ -1,0 +1,13 @@
+{
+  "name": "NodeJS",
+  "version": "1.0.0",
+  "description": "nodejs tutorial package",
+  "main": "index.js",
+  "repository": "https://github.com/itemka/NodeJS.git",
+  "author": "Artyom Paulenko <itemka2503@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
