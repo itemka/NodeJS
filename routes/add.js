@@ -1,6 +1,7 @@
 const {
   Router
 } = require('express');
+const Product = require('../models/product');
 
 const router = Router();
 
@@ -11,12 +12,18 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const {
-    body = ''
+    body: {
+      title = '',
+      price = '',
+      img = '',
+    }
   } = req;
 
-  console.log(body);
+  const product = new Product(title, price, img);
+
+  await product.save();
 
   res.redirect('/products');
 });
