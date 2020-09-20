@@ -2,6 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const exphbs = require('express-handlebars');
+const {
+  homeRoutes,
+  productsRoutes,
+  addRoutes,
+} = require('./routes');
 
 dotenv.config('./env');
 
@@ -25,26 +30,9 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
-app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Main page',
-    isHome: true,
-  });
-});
-
-app.get('/products', (req, res) => {
-  res.render('products', {
-    title: 'Products',
-    isProducts: true,
-  });
-});
-
-app.get('/add', (req, res) => {
-  res.render('add', {
-    title: 'Add products',
-    isAdd: true,
-  });
-});
+app.use('/', homeRoutes);
+app.use('/products', productsRoutes);
+app.use('/add', addRoutes);
 
 app.post('/', (req, res) => {
   const {
