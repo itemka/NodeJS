@@ -22,13 +22,13 @@ module.exports = class Product {
   }
 
   async save() {
-    const product = await Product.getAll();
-    product.push(this.toJSON());
+    const products = await Product.getAll();
+    products.push(this.toJSON());
 
     return new Promise((resolve, reject) => {
       fs.writeFile(
         path.join(__dirname, '..', 'data', 'products.json'),
-        JSON.stringify(product),
+        JSON.stringify(products),
         (err) => {
           if (err) reject(err);
           else resolve();
@@ -48,5 +48,10 @@ module.exports = class Product {
         }
       )
     })
+  }
+
+  static async getById(id) {
+    const products = await Product.getAll();
+    return products.find(prod => prod.id === id);
   }
 }

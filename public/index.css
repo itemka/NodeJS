@@ -5,3 +5,23 @@
 .price {
   font-size: 2rem;
 }
+
+.product {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product h1 {
+  margin-bottom: 2rem;
+}
+
+.product img {
+  max-width: 600px;
+  height: auto;
+}
+
+.product .price.big {
+  font-style: 2.5rem;
+}
