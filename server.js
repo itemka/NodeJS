@@ -6,6 +6,7 @@ const {
   homeRoutes,
   productsRoutes,
   addRoutes,
+  cardRoutes,
 } = require('./routes');
 
 dotenv.config('./env');
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({
 app.use('/', homeRoutes);
 app.use('/products', productsRoutes);
 app.use('/add', addRoutes);
+app.use('/card', cardRoutes);
 
 app.listen(PORT, (err) => {
   if (err) throw err;

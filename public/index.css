@@ -25,3 +25,10 @@
 .product .price.big {
   font-style: 2.5rem;
 }
+
+.card-action.action {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
