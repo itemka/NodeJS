@@ -30,6 +30,32 @@ module.exports = class Card {
     })
   }
 
+  static async remove(id) {
+    const card = await Card.fetch();
+
+    const idx = card.products.findIndex(prod => prod.id === id);
+    const product = card.products[idx];
+
+    if (product.count === 1) {
+      card.products = card.products.filter(prod => prod.id !== id);
+    } else {
+      card.products[idx].count--;
+    }
+
+    card.price -= product.price;
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(
+        path.join(__dirname, '..', 'data', 'card.json'),
+        JSON.stringify(card),
+        (err) => {
+          if (err) reject(err);
+          else resolve(card);
+        }
+      )
+    })
+  }
+
   static async fetch() {
     return new Promise((resolve, reject) => {
       fs.readFile(
