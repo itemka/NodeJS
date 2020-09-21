@@ -36,11 +36,8 @@ module.exports = class Card {
     const idx = card.products.findIndex(prod => prod.id === id);
     const product = card.products[idx];
 
-    if (product.count === 1) {
-      card.products = card.products.filter(prod => prod.id !== id);
-    } else {
-      card.products[idx].count--;
-    }
+    if (product.count === 1) card.products = card.products.filter(prod => prod.id !== id);
+    else card.products[idx].count--;
 
     card.price -= product.price;
 
