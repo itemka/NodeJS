@@ -1,7 +1,6 @@
 const {
   Router
 } = require('express');
-const Card = require('../models/card');
 const Product = require('../models/product');
 
 const router = Router();
@@ -13,21 +12,28 @@ router.post('/add', async (req, res) => {
     }
   } = req;
 
-  const product = await Product.getById(id);
-  await Card.add(product);
-
-  res.redirect('/card');
+  try {
+    const product = await Product.findById(id);
+    await req.user.addToCart(product);
+  
+    res.redirect('/card');
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.get('/', async (req, res) => {
-  const card = await Card.fetch();
+  // TODO
+  // const card = await Card.fetch();
 
-  res.render('card', {
-    title: 'Basket',
-    isCard: true,
-    products: card.products,
-    price: card.price
-  })
+  // res.render('card', {
+  //   title: 'Basket',
+  //   isCard: true,
+  //   products: card.products,
+  //   price: card.price
+  // })
+
+  res.json({test: true})
 })
 
 router.delete('/remove/:id', async (req, res) => {

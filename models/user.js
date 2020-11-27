@@ -27,4 +27,22 @@ const user = new Schema({
   }
 });
 
+user.methods.addToCart = function(product) {
+  const items = [...this.cart.items];
+  const idx = items.findIndex(prod => prod.productId.toString() === product._id.toString());
+
+  if (items[idx]) {
+    items[idx].count = items[idx].count + 1;
+  } else {
+    items.push({
+      count: 1,
+      productId: product._id,
+    })
+  }
+
+  this.cart = { items }
+
+  return this.save();
+}
+
 module.exports = model('User', user);
