@@ -18,10 +18,16 @@ router.post('/', async (req, res) => {
       title = '',
       price = '',
       img = '',
-    }
+    },
+    user
   } = req;
 
-  const product = new Product({ title, price, img });
+  const product = new Product({
+    title,
+    price,
+    img,
+    userId: user,
+  });
 
   try {
     await product.save();

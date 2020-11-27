@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('userId', 'email name');
 
     res.render('products', {
       title: 'Products',
@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-
 });
 
 router.get('/:id', async (req, res) => {
