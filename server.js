@@ -47,6 +47,7 @@ async function start() {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
       }
     );
 

@@ -6,13 +6,18 @@ const Product = require('../models/product');
 const router = Router();
 
 router.get('/', async (req, res) => {
-  const products = await Product.find();
+  try {
+    const products = await Product.find();
 
-  res.render('products', {
-    title: 'Products',
-    isProducts: true,
-    products,
-  });
+    res.render('products', {
+      title: 'Products',
+      isProducts: true,
+      products,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
 });
 
 router.get('/:id', async (req, res) => {
@@ -22,14 +27,18 @@ router.get('/:id', async (req, res) => {
     }
   } = req;
 
-  const product = await Product.findById(id);
+  try {
+    const product = await Product.findById(id);
 
-  res.render('product', {
-    layout: 'empty',
-    title: `Product ${product.title}`,
-    isProduct: true,
-    product,
-  })
+    res.render('product', {
+      layout: 'empty',
+      title: `Product ${product.title}`,
+      isProduct: true,
+      product,
+    })
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.get('/:id/edit', async (req, res) => {
@@ -42,21 +51,41 @@ router.get('/:id/edit', async (req, res) => {
 
   if (!query.allow) return res.redirect('/');
 
-  const product = await Product.findById(id);
+  try {
+    const product = await Product.findById(id);
 
-  res.render('product-edit', {
-    title: `Edit ${product.title}`,
-    product,
-  })
+    res.render('product-edit', {
+      title: `Edit ${product.title}`,
+      product,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 })
 
 router.post('/edit', async (req, res) => {
-  const { id } = req.body;
-  delete req.body.id;
+  try {
+    const { id } = req.body;
+    delete req.body.id;
 
-  await Product.findByIdAndUpdate(id, req.body);
+    await Product.findByIdAndUpdate(id, req.body);
 
-  res.redirect('/products');
+    res.redirect('/products');
+  } catch (err) {
+    console.log(err);
+  }
+})
+
+router.post('/remove', async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    await Product.deleteOne({ _id: id });
+  
+    res.redirect('/products');
+  } catch (err) {
+    console.log(err);
+  }
 })
 
 module.exports = router;
