@@ -21,11 +21,14 @@ router.post('/', async (req, res) => {
     }
   } = req;
 
-  const product = new Product(title, price, img);
+  const product = new Product({ title, price, img });
 
-  await product.save();
-
-  res.redirect('/products');
+  try {
+    await product.save();
+    res.redirect('/products');
+  } catch (err) {
+    console.log("Error of adding", err)
+  }
 });
 
 module.exports = router;
