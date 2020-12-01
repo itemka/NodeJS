@@ -25,14 +25,14 @@ router.post('/add', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-  const products = await getUserProducts(req.user);
+    const products = await getUserProducts(req.user);
 
-  res.render('card', {
-    title: 'Basket',
-    isCard: true,
-    products,
-    price: computePrice(products)
-  });
+    res.render('card', {
+      title: 'Basket',
+      isCard: true,
+      products,
+      price: computePrice(products)
+    });
   } catch (err) {
     console.log(err);
   }

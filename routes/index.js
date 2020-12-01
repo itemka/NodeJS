@@ -3,4 +3,5 @@ module.exports = {
   productsRoutes: require('./products'),
   addRoutes: require('./add'),
   cardRoutes: require('./card'),
+  ordersRoutes: require('./orders')
 };

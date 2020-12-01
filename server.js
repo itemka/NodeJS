@@ -11,6 +11,7 @@ const {
   productsRoutes,
   addRoutes,
   cardRoutes,
+  ordersRoutes,
 } = require('./routes');
 const User = require('./models/user');
 
@@ -50,6 +51,7 @@ app.use('/', homeRoutes);
 app.use('/products', productsRoutes);
 app.use('/add', addRoutes);
 app.use('/card', cardRoutes);
+app.use('/orders', ordersRoutes);
 
 async function start() {
   try {
