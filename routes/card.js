@@ -2,6 +2,7 @@ const {
   Router
 } = require('express');
 const Product = require('../models/product');
+const { getUserProducts , computePrice } = require('../utils');
 
 const router = Router();
 
@@ -23,17 +24,18 @@ router.post('/add', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  // TODO
-  // const card = await Card.fetch();
+  try {
+  const products = await getUserProducts(req.user);
 
-  // res.render('card', {
-  //   title: 'Basket',
-  //   isCard: true,
-  //   products: card.products,
-  //   price: card.price
-  // })
-
-  res.json({test: true})
+  res.render('card', {
+    title: 'Basket',
+    isCard: true,
+    products,
+    price: computePrice(products)
+  });
+  } catch (err) {
+    console.log(err);
+  }
 })
 
 router.delete('/remove/:id', async (req, res) => {
@@ -43,8 +45,17 @@ router.delete('/remove/:id', async (req, res) => {
     }
   } = req;
 
-  const card = await Card.remove(id);
-  res.status(200).json(card);
+  try {
+    await req.user.removeFromCart(id);
+    const products = await getUserProducts(req.user);
+
+    res.status(200).json({
+      products,
+      price: computePrice(products),
+    });
+  } catch (err) {
+    console.log(err);
+  }
 })
 
 module.exports = router;

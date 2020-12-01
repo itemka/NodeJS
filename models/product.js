@@ -16,4 +16,13 @@ const product = new Schema({
   }
 })
 
+product.method('toClient', function() {
+  const product = this.toObject();
+
+  product.id = product._id;
+  delete product._id;
+
+  return product;
+})
+
 module.exports = model('Product', product);
