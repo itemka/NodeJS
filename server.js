@@ -17,6 +17,7 @@ const {
   authRoutes,
 } = require('./routes');
 const varMiddleware = require('./middleware/variables');
+const userMiddleware = require('./middleware/user');
 
 dotenv.config('./env');
 
@@ -51,6 +52,7 @@ app.use(session({
   store
 }))
 app.use(varMiddleware);
+app.use(userMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/products', productsRoutes);

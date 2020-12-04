@@ -2,11 +2,12 @@ const {
   Router
 } = require('express');
 const Product = require('../models/product');
+const auth = require('../middleware/auth');
 const { getUserProducts , computePrice } = require('../utils');
 
 const router = Router();
 
-router.post('/add', async (req, res) => {
+router.post('/add', auth, async (req, res) => {
   const {
     body: {
       id = ''
@@ -23,7 +24,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const products = await getUserProducts(req.user);
 
@@ -38,7 +39,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.delete('/remove/:id', async (req, res) => {
+router.delete('/remove/:id', auth, async (req, res) => {
   const {
     params: {
       id = ''
