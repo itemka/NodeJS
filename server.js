@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const exphbs = require('express-handlebars');
+const session = require('express-session');
 const Handlebars = require('handlebars')
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 const mongoose = require('mongoose');
@@ -15,6 +16,7 @@ const {
   authRoutes,
 } = require('./routes');
 const User = require('./models/user');
+const varMiddleware = require('./middleware/variables');
 
 dotenv.config('./env');
 
@@ -47,6 +49,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
+app.use(session({
+  secret: 'same secret value',
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(varMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/products', productsRoutes);
