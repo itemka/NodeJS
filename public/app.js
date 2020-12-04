@@ -27,13 +27,17 @@ if ($card) {
     target: {
       classList,
       dataset: {
-        id
+        id,
+        csrf,
       }
     }
   }) => {
     if (classList.contains('js-remove')) {
       fetch(`/card/remove/${id}`, {
           method: 'delete',
+          headers: {
+            'X-XSRF-TOKEN': csrf
+          }
         })
         .then(res => res.json())
         .then(card => {

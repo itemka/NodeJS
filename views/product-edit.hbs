@@ -20,11 +20,13 @@
   </div>
 
   <input type="hidden" name="id" value="{{product.id}}">
+  <input type="hidden" name="_csrf" value={{ @root.csrf }}>
 
   <button type="submit" class="btn btn-primary">Edit</button>
 </form>
 
 <form action="/products/remove" method="POST">
   <input type="hidden" name="id" value="{{product.id}}">
+  <input type="hidden" name="_csrf" value={{ @root.csrf }}>
   <button class="btn red">Remove</button>
 </form>

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const csurf = require('csurf');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -50,7 +51,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store
-}))
+}));
+app.use(csurf());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
