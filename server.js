@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const csurf = require('csurf');
+const flash = require('connect-flash');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -53,6 +54,7 @@ app.use(session({
   store
 }));
 app.use(csurf());
+app.use(flash());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
