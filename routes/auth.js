@@ -3,6 +3,8 @@ const {
 } = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const mailhelper = require('../utils/mailhelper');
+const { registration } = require('../emails');
 
 const router = Router();
 
@@ -82,6 +84,11 @@ router.post('/register', async (req, res) => {
       });
       await user.save();
       res.redirect('/auth/login#login');
+      await mailhelper.sendMail(
+        registration(email),
+        { name },
+        res
+      );
     }
   } catch (err) {
     console.log(err);

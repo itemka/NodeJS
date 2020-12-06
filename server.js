@@ -20,6 +20,7 @@ const {
 } = require('./routes');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
+const multer = require('multer');
 
 dotenv.config('./env');
 
@@ -38,6 +39,8 @@ const store = new MongoDBStore({
   collection: 'sessions'
 });
 
+const upload = multer();
+
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
@@ -48,7 +51,7 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 app.use(session({
-  secret: 'same secret value',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store
@@ -57,6 +60,7 @@ app.use(csurf());
 app.use(flash());
 app.use(varMiddleware);
 app.use(userMiddleware);
+app.use(upload.array('files'));
 
 app.use('/', homeRoutes);
 app.use('/products', productsRoutes);
