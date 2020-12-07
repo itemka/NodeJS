@@ -13,6 +13,17 @@ const registration = (email) => ({
   `,
 });
 
+const reset = (email, token) => ({
+  to: email,
+  subject: 'Access recovery',
+  html: `
+    <h1>Forgot password?</h1>  
+    <p>If not - ignoring this messages</p>
+    <p>Else tap to this link: <a href="${process.env.BASE_URL}/auth/password/${token}">Access recovery</a></p>
+  `,
+});
+
 module.exports = {
   registration,
+  reset,
 };
