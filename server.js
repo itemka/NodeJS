@@ -17,10 +17,12 @@ const {
   cardRoutes,
   ordersRoutes,
   authRoutes,
+  profileRoutes,
 } = require('./routes');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
 const errorHandler = require('./middleware/error');
+const fileMiddleware = require('./middleware/file');
 
 dotenv.config('./env');
 
@@ -45,6 +47,7 @@ app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -55,6 +58,7 @@ app.use(session({
   saveUninitialized: false,
   store
 }));
+app.use(fileMiddleware.single('avatar'));
 app.use(csurf());
 app.use(flash());
 app.use(varMiddleware);
@@ -66,6 +70,7 @@ app.use('/add', addRoutes);
 app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
 
 app.use(errorHandler);
 
