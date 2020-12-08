@@ -20,7 +20,7 @@ const {
 } = require('./routes');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
-const multer = require('multer');
+const errorHandler = require('./middleware/error');
 
 dotenv.config('./env');
 
@@ -39,8 +39,6 @@ const store = new MongoDBStore({
   uri: process.env.MONGODB_URL,
   collection: 'sessions'
 });
-
-const upload = multer();
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -61,7 +59,6 @@ app.use(csurf());
 app.use(flash());
 app.use(varMiddleware);
 app.use(userMiddleware);
-app.use(upload.array('files'));
 
 app.use('/', homeRoutes);
 app.use('/products', productsRoutes);
@@ -69,6 +66,8 @@ app.use('/add', addRoutes);
 app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
+
+app.use(errorHandler);
 
 async function start() {
   try {
