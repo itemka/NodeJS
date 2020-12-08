@@ -1,20 +1,24 @@
 <h1>Add product</h1>
 
-<form action="/add" method="POST">
+{{#if error}}
+<p class="alert">{{error}}</p>
+{{/if}}
+
+<form action="/add" method="POST" novalidate>
   <div class="input-field">
-    <input id="title" name="title" type="text" class="validate" required>
+    <input id="title" name="title" type="text" class="validate" value="{{ data.title }}" required>
     <label for="title">Product Name</label>
     <span class="helper-text" data-error="Enter name"></span>
   </div>
 
   <div class="input-field">
-    <input id="price" name="price" type="number" class="validate" required min="1">
+    <input id="price" name="price" type="number" class="validate" value="{{ data.price }}" required min="1">
     <label for="price">Product price</label>
     <span class="helper-text" data-error="Enter price"></span>
   </div>
 
   <div class="input-field">
-    <input id="img" name="img" type="text" class="validate" required>
+    <input id="img" name="img" type="text" class="validate" value={{ data.img }} required>
     <label for="img">Image URL</label>
     <span class="helper-text" data-error="Enter image URL"></span>
   </div>

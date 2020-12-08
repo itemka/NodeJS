@@ -55,3 +55,17 @@ exports.signinValidators = [
     .isAlphanumeric()
     .trim(),
 ];
+
+exports.productValidators = [
+  body('title')
+    .isLength({ min: 3 })
+    .withMessage('The title must be at least 3 characters long')
+    .trim(),
+  body('price')
+    .isNumeric()
+    .withMessage('Enter correct price')
+    .trim(),
+  body('img', 'Enter correct the URL image')
+    .trim()
+    .isURL()
+];

@@ -1,9 +1,11 @@
 const {
   Router
 } = require('express');
+const { validationResult } = require('express-validator');
 const Product = require('../models/product');
 const auth = require('../middleware/auth');
 const { isOwner } = require('../utils');
+const { productValidators } = require('../utils/validators');
 
 const router = Router();
 
@@ -65,11 +67,20 @@ router.get('/:id/edit', auth, async (req, res) => {
   }
 })
 
-router.post('/edit', auth, async (req, res) => {
+router.post('/edit', auth, productValidators, async (req, res) => {
   try {
     const { id } = req.body;
     delete req.body.id;
     const product = await Product.findById(id);
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).render('product-edit', {
+        title: `Edit ${product.title}`,
+        product,
+        error: errors.array()[0].msg
+      })
+    }
 
     if (!isOwner(product, req)) return res.redirect('/products');
 
