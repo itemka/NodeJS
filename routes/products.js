@@ -3,6 +3,7 @@ const {
 } = require('express');
 const Product = require('../models/product');
 const auth = require('../middleware/auth');
+const { isOwner } = require('../utils');
 
 const router = Router();
 
@@ -13,6 +14,7 @@ router.get('/', async (req, res) => {
     res.render('products', {
       title: 'Products',
       isProducts: true,
+      userId: req.user ? req.user._id.toString() : null,
       products,
     });
   } catch (err) {
@@ -43,16 +45,16 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/edit', auth, async (req, res) => {
   const {
-    params: {
-      id = '',
-    },
-    query
+    params: { id = '' },
+    query,
   } = req;
 
   if (!query.allow) return res.redirect('/');
 
   try {
     const product = await Product.findById(id);
+
+    if (!isOwner(product, req)) return res.redirect('/products');
 
     res.render('product-edit', {
       title: `Edit ${product.title}`,
@@ -67,9 +69,12 @@ router.post('/edit', auth, async (req, res) => {
   try {
     const { id } = req.body;
     delete req.body.id;
+    const product = await Product.findById(id);
 
-    await Product.findByIdAndUpdate(id, req.body);
+    if (!isOwner(product, req)) return res.redirect('/products');
 
+    Object.assign(product, req.body);
+    await product.save();
     res.redirect('/products');
   } catch (err) {
     console.log(err);
@@ -78,9 +83,15 @@ router.post('/edit', auth, async (req, res) => {
 
 router.post('/remove', auth, async (req, res) => {
   try {
-    const { id } = req.body;
+    const {
+      body: { id },
+      user: { _id },
+    } = req;
 
-    await Product.deleteOne({ _id: id });
+    await Product.deleteOne({
+      _id: id,
+      userId: _id
+    });
   
     res.redirect('/products');
   } catch (err) {

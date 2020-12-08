@@ -14,7 +14,10 @@ const getUserProducts = async (user) => {
   return await mapCartItems(currentUser.cart);
 };
 
+const isOwner = (product, req) => product.userId.toString() === req.user._id.toString();
+
 module.exports = {
   getUserProducts,
   computePrice,
+  isOwner,
 };
