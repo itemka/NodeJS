@@ -4,5 +4,6 @@ module.exports = {
   addRoutes: require('./add'),
   cardRoutes: require('./card'),
   ordersRoutes: require('./orders'),
-  authRoutes: require('./auth')
+  authRoutes: require('./auth'),
+  profileRoutes: require('./profile')
 };
