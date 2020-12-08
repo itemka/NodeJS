@@ -67,7 +67,6 @@ router.post('/register', registerValidators, async (req, res) => {
     const {
       email,
       password,
-      confirm,
       name,
     } = req.body;
     
@@ -78,26 +77,19 @@ router.post('/register', registerValidators, async (req, res) => {
       return res.status(422).redirect('/auth/login#register');
     }
 
-    const candidate = await User.findOne({ email });
-
-    if (candidate) {
-      req.flash('registerError', 'User exists');
-      res.redirect('/auth/login#register');
-    } else {
-      const user = new User({
-        email,
-        name,
-        password: await bcrypt.hash(password, 10),
-        cart: { items: [] }
-      });
-      await user.save();
-      res.redirect('/auth/login#login');
-      await mailhelper.sendMail(
-        registration(email),
-        { name },
-        res
-      );
-    }
+    const user = new User({
+      email,
+      name,
+      password: await bcrypt.hash(password, 10),
+      cart: { items: [] }
+    });
+    await user.save();
+    res.redirect('/auth/login#login');
+    await mailhelper.sendMail(
+      registration(email),
+      { name },
+      res
+    );
   } catch (err) {
     console.log(err);
   }
