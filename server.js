@@ -10,6 +10,7 @@ const Handlebars = require('handlebars')
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 const mongoose = require('mongoose');
 const path = require('path');
+const compression = require('compression');
 const {
   homeRoutes,
   productsRoutes,
@@ -61,6 +62,7 @@ app.use(session({
 app.use(fileMiddleware.single('avatar'));
 app.use(csurf());
 app.use(flash());
+app.use(compression());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
